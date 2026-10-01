@@ -16,12 +16,7 @@
 
     function setLang(l) { setLangRaw(l); try { localStorage.setItem('pkb_lang', l); } catch (e) {} document.documentElement.lang = l; }
 
-    // --- DEMO MODE: only Home & Reservation are live; other pages are shown
-    //     in the menus but locked (not clickable) for this preview build. ---
-    var DEMO_LOCKED = { apartments: true, apartment: true, about: true };
-
     function go(name, arg) {
-      if (DEMO_LOCKED[name]) return; // locked in demo build
       var r = { name: name };
       if (name === 'apartment') r.id = arg;
       if (name === 'reservation') r.prefill = (arg && arg.res) ? arg.res : null;

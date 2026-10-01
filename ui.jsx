@@ -100,19 +100,14 @@
     var ontop = props.ontop && !solid;
     var cls = 'nav' + (solid ? ' solid' : '') + (ontop ? ' ontop' : '') + (props.onlight ? ' onlight' : '');
 
-    // third value = locked (shown but not clickable in this demo build)
-    var soon = lang === 'cz' ? 'Připravujeme' : 'Coming soon';
     var links = [
-      ['home', t('nav_home', lang), false],
-      ['apartments', t('nav_apts', lang), true],
-      ['reservation', t('nav_res', lang), false],
-      ['about', t('nav_about', lang), true]
+      ['home', t('nav_home', lang)],
+      ['apartments', t('nav_apts', lang)],
+      ['reservation', t('nav_res', lang)],
+      ['about', t('nav_about', lang)]
     ];
 
     function LinkBtn(l) {
-      if (l[2]) {
-        return h('span', { key: l[0], className: 'nav-link locked', title: soon }, l[1]);
-      }
       var active = route === l[0] || (l[0] === 'apartments' && route === 'apartment');
       return h('a', {
         key: l[0], href: '#', className: 'nav-link' + (active ? ' active' : ''),
@@ -147,10 +142,6 @@
           ),
           h('nav', { className:'drawer-nav' },
             links.map(function (l) {
-              if (l[2]) {
-                return h('span', { key: l[0], className:'drawer-link locked' },
-                  l[1], h('span', { className:'soon-tag' }, soon));
-              }
               return h('a', { key: l[0], href:'#', className:'drawer-link',
                 onClick: function(e){ e.preventDefault(); go(l[0]); setOpen(false); } },
                 l[1], h(Icon, { name:'arrowR', size:19 }));
@@ -190,8 +181,7 @@
           h('div', null,
             h('h4', null, lang==='cz'?'Navigace':'Navigation'),
             h('div', { className:'stack-sm' },
-              [['home',t('nav_home',lang),false],['apartments',t('nav_apts',lang),true],['reservation',t('nav_res',lang),false],['about',t('nav_about',lang),true]].map(function(l){
-                if (l[2]) return h('div',{ key:l[0] }, h('span',{ className:'foot-locked' }, l[1]));
+              [['home',t('nav_home',lang)],['apartments',t('nav_apts',lang)],['reservation',t('nav_res',lang)],['about',t('nav_about',lang)]].map(function(l){
                 return h('div',{ key:l[0] }, h('a',{ href:'#', onClick:function(e){ e.preventDefault(); go(l[0]); } }, l[1]));
               })
             )
@@ -200,7 +190,7 @@
             h('h4', null, lang==='cz'?'Apartmány':'Apartments'),
             h('div', { className:'stack-sm' },
               window.PKB.apartments.map(function(a){
-                return h('div',{ key:a.id }, h('span',{ className:'foot-locked' }, tx(a.name, lang)));
+                return h('div',{ key:a.id }, h('a',{ href:'#', onClick:function(e){ e.preventDefault(); go('apartment', a.id); } }, tx(a.name, lang)));
               })
             )
           ),
